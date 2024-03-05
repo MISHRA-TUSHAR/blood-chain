@@ -2,6 +2,10 @@ import React from "react";
 import { BiDonateBlood, BiUserCircle } from "react-icons/bi";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import logo from "../../../assets/blood_logo-removebg-preview.png";
+import "./Header.css";
+
+
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -17,8 +21,8 @@ const Header = () => {
     <>
       <nav className="navbar">
         <div className="container-fluid ">
-          <div className="navbar-brand h1 ">
-            <BiDonateBlood color="red" /> Blood Bank App
+          <div className="navbar-brand">
+            <img src={logo} alt="" className="logo"/> Blood Chain
           </div>
           <ul className="navbar-nav flex-row">
             <li className="nav-item mx-3">
