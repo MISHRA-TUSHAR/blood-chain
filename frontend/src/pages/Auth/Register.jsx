@@ -23,7 +23,10 @@ const Register = () => {
               submitBtn={"Register"}
               formType={"register"}
             />
+            <br />
+          <button className="btn btn-success">Validate with Aadhar/Pan Card</button>
           </div>
+        
         </div>
       )}
     </>
