@@ -4,5 +4,5 @@ const testController = (req, res) => {
       success: true,
     });
   };
-  
+
 export default testController;

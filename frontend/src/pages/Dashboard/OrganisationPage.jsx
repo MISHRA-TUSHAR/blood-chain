@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Layout from "./../../components/shared/Layout/Layout";
 import moment from "moment";
 import { useSelector } from "react-redux";
@@ -9,11 +9,10 @@ const OrganisationPage = () => {
   const { user } = useSelector((state) => state.auth);
   const [data, setData] = useState([]);
   //find org records
-  const getOrg = async () => {
+  const getOrg = useCallback(async () => {
     try {
       if (user?.role === "donar") {
         const { data } = await API.get("/inventory/get-orgnaisation");
-        //   console.log(data);
         if (data?.success) {
           setData(data?.organisations);
         }
@@ -22,7 +21,6 @@ const OrganisationPage = () => {
         const { data } = await API.get(
           "/inventory/get-orgnaisation-for-hospital"
         );
-        //   console.log(data);
         if (data?.success) {
           setData(data?.organisations);
         }
@@ -30,12 +28,11 @@ const OrganisationPage = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [user?.role]); // Adding user?.role as a dependency since it's used in the function
 
   useEffect(() => {
     getOrg();
-  }, [user]);
-
+  }, [getOrg]);
   return (
     <Layout>
       <table className="table ">
