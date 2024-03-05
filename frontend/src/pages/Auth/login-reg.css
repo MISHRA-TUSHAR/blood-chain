@@ -1,0 +1,12 @@
+.login-reg-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    /* background-color: #f1f1f1; */
+    
+}
+.imageback{
+    height: 95vh;
+}
