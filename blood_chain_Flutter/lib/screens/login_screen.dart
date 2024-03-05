@@ -1,3 +1,4 @@
+import 'package:blood/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:blood/utils/colors.dart';
 import 'package:blood/widgets/textfield.dart';
@@ -57,9 +58,13 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const CircleAvatar(
-          radius: 50,
-          backgroundImage: AssetImage('assets/blood.png'),
+        Container(
+          width: 150, // Adjust size as needed
+          height: 150, // Adjust size as needed
+          child: Image.asset(
+            'assets/blood.png',
+            fit: BoxFit.contain,
+          ),
         ),
         const SizedBox(height: 20),
         TextFieldWidgets(
@@ -75,7 +80,25 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
-            // Login logic here
+            // Check if the username and password are not empty
+            if (_usernameController.text.isNotEmpty &&
+                _passwordController.text.isNotEmpty) {
+              // If not empty, navigate to the HomeScreen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      HomeScreen(), // Define HomeScreen widget
+                ),
+              );
+            } else {
+              // Show a message if username or password is empty
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Please enter username and password'),
+                ),
+              );
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.mainColor,
