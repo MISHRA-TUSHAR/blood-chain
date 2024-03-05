@@ -19,13 +19,13 @@ const Login = () => {
           </div>
           <div className="#">
             <Form
-              formTitle={"Login Page"}
+              formTitle={"Login"}
               submitBtn={"Login"}
               formType={"login"}
             />
             <br />
             <br />
-            <button>VALIDATE WITH PAN CARD/VOTER ID</button>
+            <button className="btn btn-success">VALIDATE WITH PAN CARD/VOTER ID</button>
           </div>
         </div>
       )}
