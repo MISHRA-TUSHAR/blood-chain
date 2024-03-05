@@ -2,7 +2,9 @@ import React from "react";
 import Form from "../../components/shared/Form/Form";
 import { useSelector } from "react-redux";
 import Spinner from "../../components/shared/Spinner";
-import image from "../../assets/images/banner1.png"
+import image from "../../assets/healthy-man-donating-his-blood.svg";
+import './login-reg.css'
+
 const Login = () => {
   const { loading, error } = useSelector((state) => state.auth);
   return (
@@ -11,16 +13,19 @@ const Login = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <div className="row g-0">
+        <div className="login-reg-container">
           <div className="col-md-8 form-banner">
-            <img height="100"  width="100" src={image} alt="age2" />
+            <img src={image} alt="age2" className="imageback" />
           </div>
-          <div className="col-md-4 form-container">
+          <div className="#">
             <Form
               formTitle={"Login Page"}
               submitBtn={"Login"}
               formType={"login"}
             />
+            <br />
+            <br />
+            <button>VALIDATE WITH PAN CARD/VOTER ID</button>
           </div>
         </div>
       )}
