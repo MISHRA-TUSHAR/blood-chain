@@ -1,0 +1,29 @@
+.login-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+ .reg-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+ }
+ 
+ .login-reg-image{
+    height: 95vh;
+    width: 100%;
+ }
+
+.logo{
+    position: absolute;
+    top: 0;
+    left: 2;
+    height: 100px;
+
+
+}
