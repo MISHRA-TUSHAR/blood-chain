@@ -6,6 +6,7 @@ import { createInventoryController, getDonarsController, getHospitalController, 
 import bloodGroupDetailsContoller from "../controllers/analyticsController.js";
 import { adminMiddleware } from "../middlewares/adminMiddleware.js";
 import { deleteDonarController, getDonarsListController, getHospitalListController, getOrgListController } from "../controllers/adminController.js";
+import { fetchHospitals, postHospitals } from "../controllers/locationController.js";
 
 
 const router = express.Router();
@@ -13,6 +14,10 @@ const router = express.Router();
 
 //TEST ROUTE
 router.get("/test", testController);
+
+router.post("/hospitalsNearby", postHospitals);
+router.get("/hospitalsNearby", fetchHospitals);
+
 //REGISTER || POST
 router.post("/auth/register", registerController);
 //LOGIN || POST
