@@ -6,6 +6,7 @@ import Layout from "../components/shared/Layout/Layout";
 import Modal from "../components/shared/modal/Modal";
 import API from "../services/API";
 import moment from "moment";
+// import { toast } from "react-toastify";
 
 const HomePage = () => {
   const { loading, error, user } = useSelector((state) => state.auth);
@@ -18,10 +19,12 @@ const HomePage = () => {
       const { data } = await API.get("/inventory/get-inventory");
       if (data?.success) {
         setData(data?.inventory);
+        // toast.success('Inventory added successfully.')
         // console.log(data);
       }
     } catch (error) {
       console.log(error);
+      // toast.error('Error in fetching inventory records.');
     }
   };
 

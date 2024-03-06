@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../components/shared/Layout/Layout";
 import moment from "moment";
 import API from "../../services/API";
+import { toast } from "react-toastify";
 
 const DonarList = () => {
   const [data, setData] = useState([]);
@@ -12,9 +13,11 @@ const DonarList = () => {
       //   console.log(data);
       if (data?.success) {
         setData(data?.donarData);
+        toast.success('Donars List Loaded Successfully');
       }
     } catch (error) {
       console.log(error);
+      toast.error('Oops!Something went wrong');
     }
   };
 

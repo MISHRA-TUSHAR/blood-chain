@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 const registerController = async (req, res) => {
     try {
       const exisitingUser = await User.findOne({ email: req.body.email });
+      
       //validation
       if (exisitingUser) {
         return res.status(200).send({
@@ -18,6 +19,7 @@ const registerController = async (req, res) => {
       req.body.password = hashedPassword;
       //rest data
       const user = new User(req.body);
+      // console.log(user);
       await user.save();
       return res.status(201).send({
         success: true,
@@ -38,6 +40,7 @@ const registerController = async (req, res) => {
   const loginController = async (req, res) => {
     try {
       const user = await User.findOne({ email: req.body.email });
+      // console.log(user);
       if (!user) {
         return res.status(404).send({
           success: false,

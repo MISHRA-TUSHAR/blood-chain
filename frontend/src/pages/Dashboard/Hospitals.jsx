@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../components/shared/Layout/Layout";
 import API from "../../services/API";
 import moment from "moment";
+import { toast } from "react-toastify";
 
 const Hospitals = () => {
   const [data, setData] = useState([]);
@@ -11,7 +12,9 @@ const Hospitals = () => {
       const { data } = await API.get("/inventory/get-hospitals");
       //   console.log(data);
       if (data?.success) {
+
         setData(data?.hospitals);
+        toast.success('Data uploaded');
       }
     } catch (error) {
       console.log(error);

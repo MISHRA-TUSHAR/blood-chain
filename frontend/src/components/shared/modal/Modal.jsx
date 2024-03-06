@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import InputType from "./../Form/InputType";
 import API from "./../../../services/API";
-
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Modal = () => {
   const [inventoryType, setInventoryType] = useState("in");
   const [bloodGroup, setBloodGroup] = useState("");
@@ -13,7 +14,7 @@ const Modal = () => {
   const handleModalSubmit = async () => {
     try {
       if (!bloodGroup || !quantity) {
-        return alert("Please Provide All Fields");
+        return toast.error("Please Provide All Fields");
       }
       const { data } = await API.post("/inventory/create-inventory", {
         email,
@@ -23,11 +24,11 @@ const Modal = () => {
         quantity,
       });
       if (data?.success) {
-        alert("New Record Created");
+        toast.success("New Record Created");
         window.location.reload();
       }
     } catch (error) {
-      alert(error.response.data.message);
+     toast.error(error.response.data.message || "An error has been ocurred!");
       console.log(error);
       window.location.reload();
     }
@@ -36,6 +37,7 @@ const Modal = () => {
   return (
     <>
       {/* Modal */}
+      <ToastContainer/>
       <div
         className="modal fade"
         id="staticBackdrop"

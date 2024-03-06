@@ -21,4 +21,4 @@ const searchHospitalNearby = (latitude, longitude) => {
     });
 };
 
-export default searchHospitalNearby;
+export { searchHospitalNearby };

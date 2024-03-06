@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../components/shared/Layout/Layout";
 import moment from "moment";
 import API from "../../services/API";
+import { toast } from "react-toastify";
 
 const OrgList = () => {
   const [data, setData] = useState([]);
@@ -12,9 +13,11 @@ const OrgList = () => {
       console.log(data);
       if (data?.success) {
         setData(data?.orgData);
+        toast.success('Data uploaded');
       }
     } catch (error) {
       console.log(error);
+      toast.error('Provide all fields');
     }
   };
 
