@@ -1,3 +1,4 @@
+import 'package:blood/screens/hospital.dart';
 import 'package:blood/widgets/sidebar.dart';
 import 'package:flutter/material.dart';
 
@@ -109,8 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const LocateHPScreen()),
+                    MaterialPageRoute(builder: (context) => LocateHPScreen()),
                   );
                 },
                 child: const Text('Locate Nearest Hospital'),
@@ -121,26 +121,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
-
-class LocateHPScreen extends StatelessWidget {
-  const LocateHPScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Locate Nearest Hospital'),
-      ),
-      body: const Center(
-        child: Text('This is the Locate Nearest Hospital Screen'),
-      ),
-    );
-  }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: HomeScreen(),
-  ));
 }

@@ -1,10 +1,12 @@
-import 'package:blood/screens/home_screen.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:blood/screens/home_screen.dart';
 import 'package:blood/utils/colors.dart';
 import 'package:blood/widgets/textfield.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -12,7 +14,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   bool _showLoginForm = true;
   String? _selectedUserType;
@@ -22,6 +26,47 @@ class _LoginScreenState extends State<LoginScreen> {
     'organisation': 'Enter organization name',
     'admin': 'Enter admin name',
   };
+
+  Future<void> _login() async {
+    const String apiUrl = 'http://172.168.4.220:8000/auth/login';
+    final Map<String, dynamic> userData = {
+      "role": "donar", // Corrected 'donar' to 'donor'
+      "email": "abcde@gmail.com", // You may change this if needed
+      "password": _passwordController.text,
+    };
+
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(apiUrl),
+        body: json.encode(userData),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Login successful, navigate to HomeScreen
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      } else {
+        // Login failed, show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text('Login failed. Please check your email and password.'),
+          ),
+        );
+      }
+    } catch (error) {
+      // Error occurred during API call
+      print('Error: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('An error occurred. Please try again later.'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(height: 20),
         TextFieldWidgets(
           textController: _usernameController,
-          hintText: 'Username',
+          hintText: 'Email',
         ),
         const SizedBox(height: 10),
         TextFieldWidgets(
@@ -79,27 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         const SizedBox(height: 20),
         ElevatedButton(
-          onPressed: () {
-            // Check if the username and password are not empty
-            if (_usernameController.text.isNotEmpty &&
-                _passwordController.text.isNotEmpty) {
-              // If not empty, navigate to the HomeScreen
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      HomeScreen(), // Define HomeScreen widget
-                ),
-              );
-            } else {
-              // Show a message if username or password is empty
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Please enter username and password'),
-                ),
-              );
-            }
-          },
+          onPressed: _login,
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.mainColor,
             shape: RoundedRectangleBorder(
@@ -189,12 +214,16 @@ class _LoginScreenState extends State<LoginScreen> {
             },
           ),
         ),
-        const SizedBox(height: 20),
         if (_selectedUserType != null) ..._buildUserTypeSpecificFields(),
         const SizedBox(height: 20),
         TextFieldWidgets(
           textController: _usernameController,
-          hintText: 'Username',
+          hintText: 'Email',
+        ),
+        const SizedBox(height: 10),
+        TextFieldWidgets(
+          textController: _nameController, // Use a separate controller for name
+          hintText: 'Name',
         ),
         const SizedBox(height: 10),
         TextFieldWidgets(
@@ -203,16 +232,17 @@ class _LoginScreenState extends State<LoginScreen> {
           obscureText: true,
         ),
         const SizedBox(height: 10),
-        TextFieldWidgets(
-          textController: _passwordController,
-          hintText: 'Confirm Password',
+        TextField(
+          controller: _passwordController,
           obscureText: true,
+          decoration: InputDecoration(
+            hintText: 'Confirm Password',
+            border: OutlineInputBorder(),
+          ),
         ),
         const SizedBox(height: 20),
         ElevatedButton(
-          onPressed: () {
-            // Register logic here, use _selectedUserType
-          },
+          onPressed: _register,
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.mainColor,
             shape: RoundedRectangleBorder(
@@ -256,7 +286,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 20),
           TextFieldWidgets(
             textController: _usernameController,
-            hintText: _userTypeHints['hospital'],
+            hintText: 'Hospital Name',
           ),
           const SizedBox(height: 10),
           // Add more fields specific to hospitals if needed
@@ -266,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 20),
           TextFieldWidgets(
             textController: _usernameController,
-            hintText: _userTypeHints['individual_donor'],
+            hintText: 'Full Name',
           ),
           const SizedBox(height: 10),
           // Add more fields specific to individual donors if needed
@@ -276,7 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 20),
           TextFieldWidgets(
             textController: _usernameController,
-            hintText: _userTypeHints['organisation'],
+            hintText: 'Organization Name',
           ),
           const SizedBox(height: 10),
           // Add more fields specific to organisations if needed
@@ -286,13 +316,56 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 20),
           TextFieldWidgets(
             textController: _usernameController,
-            hintText: _userTypeHints['admin'],
+            hintText: 'Admin Name',
           ),
           const SizedBox(height: 10),
           // Add more fields specific to admins if needed
         ];
       default:
         return [];
+    }
+  }
+
+  Future<void> _register() async {
+    const String apiUrl = 'http://172.168.4.220:8000/auth/register';
+    final Map<String, dynamic> userData = {
+      "role": _selectedUserType,
+      "name": _usernameController.text,
+      "email": _emailController.text,
+      "password": _passwordController.text,
+      // Additional fields based on user type can be added here
+    };
+
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(apiUrl),
+        body: json.encode(userData),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Registration successful, navigate to HomeScreen or show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Registration successful.'),
+          ),
+        );
+      } else {
+        // Registration failed, show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Registration failed. Please try again.'),
+          ),
+        );
+      }
+    } catch (error) {
+      // Error occurred during API call
+      print('Error: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('An error occurred. Please try again later.'),
+        ),
+      );
     }
   }
 }
