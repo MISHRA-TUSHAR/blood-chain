@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import InputType from "./InputType";
 import { Link } from "react-router-dom";
 import { handleLogin, handleRegister } from '../../../services/AuthService'
-
+import { ToastContainer, toast } from "react-toastify";
+// import {toast,ToastContainer} from 'react-toastify';
+// import Header from "../Layout/Header";
+// import mainnav from "../Layout/Menus/Mainnav";
+// import Mainnav from "../Layout/Mainnav";
 const Form = ({ formType, submitBtn, formTitle }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,11 +18,16 @@ const Form = ({ formType, submitBtn, formTitle }) => {
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   return (
+     <>
     <div>
+      <ToastContainer/>
+      {/* <Mainnav/> */}
       <form
         onSubmit={(e) => {
-          if (formType === "login")
+          if (formType === "login"){
+            toast.success('Login successful');
             return handleLogin(e, email, password, role);
+          }
           else if (formType === "register")
             return handleRegister(
               e,
@@ -196,8 +205,7 @@ const Form = ({ formType, submitBtn, formTitle }) => {
             }
           }
         })()}
-
-        <div className="d-flex flex-row justify-content-between">
+         <div className="d-flex flex-row justify-content-between">
           {formType === "login" ? (
             <p>
               Not registerd yet ? Register
@@ -209,12 +217,17 @@ const Form = ({ formType, submitBtn, formTitle }) => {
               <Link to="/login"> Login !</Link>
             </p>
           )}
-          <button className="btn btn-primary" type="submit">
-            {submitBtn}
-          </button>
+
         </div>
+              <center>
+              <button className="btn btn-primary d-flex" type="submit">
+                {submitBtn}
+              </button>
+              </center>
+       
       </form>
     </div>
+    </>
   );
 };
 

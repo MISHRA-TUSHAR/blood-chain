@@ -25,4 +25,4 @@ const fetchHospitals = async( req, res) => {
      console.log(hospital);    
 }
 
-export { postHospitals, fetchHospitals};
+export { postHospitals, fetchHospitals };
